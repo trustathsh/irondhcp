@@ -1,0 +1,30 @@
+0.3.0
+	* new keystore
+	* use ifmapj 0.1.4 (was 0.1.3)
+0.2.2
+	* use ifmapj 0.1.3 (was 0.1.1)
+	* changed default configuration to use basic authentication
+	* lifetime of metadata is now session
+
+0.2.0
+	* New Parser: Completely rewritten without JavaCC
+	* Parser: only one abstract method: public abstract ArrayList<Lease> parseString(String txt);
+	* ParserImplDHCP: Extends Parser and makes uses of java regex utility-classes (Pattern and 
+	  Matcher)
+	* old classes in parser-package deleted
+	* FileWatcher: methods to read the file contents are moved here
+	* LeaseManager: moved to control-package, no static anymore, removed unused methods
+	* de.fhhannover.inform.iron.dhcp.util.DateUtil: helper class for formating dates
+	* SOAPMessgeSender: added correct Date conversion, removed old unused methods
+	* some minor changes
+	* Refactoring: rename some classes and moved to different packages. there are only
+	  3 packages left: parsing, service and util.
+	* exception handling during reading/parsing dhcpd.leases
+	* using ifmapj now instead of Axis2
+
+0.1.1
+	* Fixed two minor bugs in the LeaseParser that caused crashes
+	when unexpected characters were encountered
+	(reportey by Jens Lucius, NCP)
+0.1.0
+	* Initial release

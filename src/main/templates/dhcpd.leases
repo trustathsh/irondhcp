@@ -1,0 +1,28 @@
+lease 192.168.0.122 {
+	starts 4 2010/11/01 21:16:14;
+	ends 4 2011/11/01 21:16:14;
+	cltt 4 2010/11/01 21:16:14;
+	binding state active;
+	next binding state free;
+	hardware ethernet 00:12:34:56:78:99;
+}
+
+lease 192.168.0.123 {
+	starts 4 2010/11/01 21:21:06;
+	ends 4 2011/11/01 21:21:06;
+	cltt 4 2010/11/01 21:21:06;
+	binding state active;
+	next binding state free;
+	hardware ethernet 00:12:34:56:93:12;
+}
+
+
+lease 10.0.0.1 {
+starts 4 2011/12/14 12:48:23;
+ends 4 2012/12/14 12:48:23;
+cltt 4 2011/12/14 12:48:23;
+binding state active;
+next binding state free;
+hardware ethernet aa:bb:cc:dd:ee:ff;
+}
+
