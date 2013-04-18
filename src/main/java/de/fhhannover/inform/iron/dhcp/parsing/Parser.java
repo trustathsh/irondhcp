@@ -20,7 +20,7 @@ package de.fhhannover.inform.iron.dhcp.parsing;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.inform.fh-hannover.de/
  * 
- * This file is part of irondhcp, version 0.3.0, implemented by the Trust@FHH 
+ * This file is part of irondhcp, version 0.3.1, implemented by the Trust@FHH 
  * research group at the Fachhochschule Hannover.
  * %%
  * Copyright (C) 2010 - 2013 Trust@FHH
