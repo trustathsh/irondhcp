@@ -30,6 +30,18 @@ dhcp.leases file changes from active to free, a publish delete request
 is sent to the MAP server in order to remove the added ip-mac
 metadata. The lifetime of the published metadata is set to 'session'.
 
+Building
+========
+
+Simply run 
+
+  mvn package
+
+to build the project. There are three relevant artifacts created: 
+  *irondhcp-<version>-bin.jar - Binary with packed dependencies
+  *irondhcp-<version>-bundle.zip - Bundle with binary and relevant configuration files
+  *irondhcp-<version>-src.zip - Source package
+  
 
 Configuration
 =============

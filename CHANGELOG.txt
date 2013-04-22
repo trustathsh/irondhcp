@@ -1,3 +1,6 @@
+0.3.1
+	* use ifmapj 0.1.5 (was 0.1.4)
+
 0.3.0
 	* new keystore
 	* use ifmapj 0.1.4 (was 0.1.3)
