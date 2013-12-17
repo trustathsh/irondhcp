@@ -1,13 +1,11 @@
-package de.fhhannover.inform.iron.dhcp.parsing;
-
 /*
  * #%L
- * ====================================================
- *   _____                _     ____  _____ _   _ _   _
- *  |_   _|_ __ _   _ ___| |_  / __ \|  ___| | | | | | |
- *    | | | '__| | | / __| __|/ / _` | |_  | |_| | |_| |
- *    | | | |  | |_| \__ \ |_| | (_| |  _| |  _  |  _  |
- *    |_| |_|   \__,_|___/\__|\ \__,_|_|   |_| |_|_| |_|
+ * =====================================================
+ *   _____                _     ____  _   _       _   _
+ *  |_   _|_ __ _   _ ___| |_  / __ \| | | | ___ | | | |
+ *    | | | '__| | | / __| __|/ / _` | |_| |/ __|| |_| |
+ *    | | | |  | |_| \__ \ |_| | (_| |  _  |\__ \|  _  |
+ *    |_| |_|   \__,_|___/\__|\ \__,_|_| |_||___/|_| |_|
  *                             \____/
  * 
  * =====================================================
@@ -18,12 +16,12 @@ package de.fhhannover.inform.iron.dhcp.parsing;
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.inform.fh-hannover.de/
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of irondhcp, version 0.3.1, implemented by the Trust@FHH 
- * research group at the Fachhochschule Hannover.
+ * This file is part of irondhcp, version 0.3.2, implemented by the Trust@HsH 
+ * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@FHH
+ * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +37,7 @@ package de.fhhannover.inform.iron.dhcp.parsing;
  * #L%
  */
 
+package de.hshannover.f4.trust.irondhcp.parsing;
 
 import java.util.ArrayList;
 import java.util.Calendar;

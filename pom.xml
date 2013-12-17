@@ -8,18 +8,18 @@
 	</properties>
 
 	<!-- general project information -->
-	<groupId>de.fhhannover.inform.trust</groupId>
+	<groupId>de.hshannover.f4.trust</groupId>
 	<artifactId>irondhcp</artifactId>
-	<version>0.3.1</version>
+	<version>0.3.2</version>
 	<packaging>jar</packaging>
 	<name>irondhcp</name>
-	<url>http://trust.inform.fh-hannover.de</url>
+	<url>http://trust.f4.hs-hannover.de</url>
 	<description>
 		an IF-MAP client
 	</description>
 	<organization>
-		<name>Trust@FHH</name>
-		<url>http://trust.inform.fh-hannover.de</url>
+		<name>Trust@HsH</name>
+		<url>http://trust.f4.hs-hannover.de</url>
 	</organization>
 
 	<!-- the project license -->
@@ -35,22 +35,21 @@
 	<!-- the core developers of the project -->
 	<developers>
 		<developer>
-			<id>aw</id>
-			<name>Arne Welzel</name>
-			<email>arne.welzel@googlemail.com</email>
-		</developer>
-		<developer>
-			<id>ib</id>
-			<name>Ingo Bente</name>
-			<email>ingo.bente@fh-hannover.de</email>
-		</developer>
-		<developer>
-			<id>tr</id>
-			<name>Tobias Ruhe</name>
+			<name>Trust@HsH</name>
+			<email>trust@f4-i.fh-hannover.de</email>
 		</developer>
 	</developers>
 
 	<contributors>
+		<contributor>
+			<name>Arne Welzel</name>
+		</contributor>
+		<contributor>
+			<name>Ingo Bente</name>
+		</contributor>
+		<contributor>
+			<name>Tobias Ruhe</name>
+		</contributor>
 		<contributor>
 			<name>Sebastian Kobert</name>
 		</contributor>
@@ -113,29 +112,21 @@
 				<configuration>
 					<licenseName>apache_v2</licenseName>
 					<canUpdateDescription>true</canUpdateDescription>
+					<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 					<descriptionTemplate>${basedir}/src/license/description_template.ftl</descriptionTemplate>
 					<roots>
 						<root>src/main/java</root>
 					</roots>
 				</configuration>
-				<executions>
-					<execution>
-						<id>first</id>
-						<goals>
-							<goal>update-file-header</goal>
-						</goals>
-						<phase>process-sources</phase>
-					</execution>
-				</executions>
 			</plugin>
 
 		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>de.fhhannover.inform.trust</groupId>
+			<groupId>de.hshannover.f4.trust</groupId>
 			<artifactId>ifmapj</artifactId>
-			<version>0.1.5</version>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 </project>
