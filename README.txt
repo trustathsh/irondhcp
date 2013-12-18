@@ -101,6 +101,6 @@ URLs
 ====
 [1] http://www.isc.org/software/dhcp
 [2] http://www.trustedcomputinggroup.org/resources/tnc_ifmap_binding_for_soap_specification
-[3] http://trust.inform.fh-hannover.de
+[3] http://trust.f4.hs-hannover.de
 [4] http://download.oracle.com/javase/1.5.0/docs/tooldocs/solaris/keytool.html
 [5] http://www.apache.org/licenses/LICENSE-2.0.html
