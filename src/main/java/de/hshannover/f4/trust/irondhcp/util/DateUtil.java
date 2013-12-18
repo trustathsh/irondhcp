@@ -10,7 +10,7 @@
  * 
  * =====================================================
  * 
- * Hochschule Hannover 
+ * Hochschule Hannover
  * (University of Applied Sciences and Arts, Hannover)
  * Faculty IV, Dept. of Computer Science
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
@@ -18,8 +18,8 @@
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of irondhcp, version 0.3.2, implemented by the Trust@HsH 
- * research group at the Hochschule Hannover.
+ * This file is part of irondhcp, version 0.3.2,
+ * implemented by the Trust@HsH research group at the Hochschule Hannover.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -36,6 +36,7 @@
  * limitations under the License.
  * #L%
  */
+
 
 package de.hshannover.f4.trust.irondhcp.util;
 
