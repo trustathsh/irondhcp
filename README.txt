@@ -10,7 +10,7 @@ The program was written using Java. For communication purposes
 ifmapj is used. Communication between the MAP client and MAP
 server is done using IF-MAP 2.0 [2].
 
-Development was started within the IRON project at Fachhochschule
+Development was started within the IRON project at Hochschule
 Hannover (Hannover University of Applied Sciences and Arts). The
 implementation is now maintained and extended within the ESUKOM
 research project. More information about the projects can be

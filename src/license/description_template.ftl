@@ -8,7 +8,7 @@
 
 =====================================================
 
-Fachhochschule Hannover 
+Hochschule Hannover 
 (University of Applied Sciences and Arts, Hannover)
 Faculty IV, Dept. of Computer Science
 Ricklinger Stadtweg 118, 30459 Hannover, Germany
