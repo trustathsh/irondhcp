@@ -81,7 +81,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>de.fhhannover.inform.iron.dhcp.Client</mainClass>
+							<mainClass>de.hshannover.f4.trust.irondhcp.Client</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 						<manifestEntries>
