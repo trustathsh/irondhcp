@@ -43,17 +43,13 @@ package de.hshannover.f4.trust.irondhcp.service;
 import java.io.IOException;
 import java.util.List;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.TrustManager;
-
 import org.w3c.dom.Document;
 
-import de.hshannover.f4.trust.irondhcp.parsing.Lease;
-import de.hshannover.f4.trust.irondhcp.util.DateUtil;
 import de.hshannover.f4.trust.ifmapj.IfmapJ;
-import de.hshannover.f4.trust.ifmapj.IfmapJHelper;
 import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 import de.hshannover.f4.trust.ifmapj.channel.SSRC;
+import de.hshannover.f4.trust.ifmapj.config.BasicAuthConfig;
+import de.hshannover.f4.trust.ifmapj.config.CertAuthConfig;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapErrorResult;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapException;
 import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
@@ -67,6 +63,8 @@ import de.hshannover.f4.trust.ifmapj.messages.PublishRequest;
 import de.hshannover.f4.trust.ifmapj.messages.PublishUpdate;
 import de.hshannover.f4.trust.ifmapj.messages.Requests;
 import de.hshannover.f4.trust.ifmapj.metadata.StandardIfmapMetadataFactory;
+import de.hshannover.f4.trust.irondhcp.parsing.Lease;
+import de.hshannover.f4.trust.irondhcp.util.DateUtil;
 
 /**
  * This Class contains all methods that are necessary for the communication with
@@ -150,20 +148,16 @@ public final class IfmapService {
 	 */
 	public void prepareSSRC() throws InitializationException {
 		if (mSSRC == null) {
-			TrustManager[] tms = IfmapJHelper.getTrustManagers(
-					ConfigService.getTrustStoreFile(),
-					ConfigService.getTruststorePassword());
-
 			if (ConfigService.getBasicAuthEnabled()) {
-				mSSRC = IfmapJ.createSSRC(ConfigService.getServerUrl(),
-						ConfigService.getBasicAuthUser(),
-						ConfigService.getBasicAuthPassword(), tms);
+				BasicAuthConfig basicConfig = new BasicAuthConfig(ConfigService.getServerUrl(), ConfigService.getBasicAuthUser(),
+						ConfigService.getBasicAuthPassword(), ConfigService.getTrustStoreFile(),
+						ConfigService.getTruststorePassword());
+				mSSRC = IfmapJ.createSsrc(basicConfig);
 			} else {
-				KeyManager[] kms = IfmapJHelper.getKeyManagers(
-						ConfigService.getKeystoreFile(),
-						ConfigService.getKeystorePassword());
-				mSSRC = IfmapJ.createSSRC(ConfigService.getServerUrl(), kms,
-						tms);
+				CertAuthConfig certConfig = new CertAuthConfig(ConfigService.getServerUrl(), ConfigService.getTrustStoreFile(),
+						ConfigService.getTruststorePassword(), ConfigService.getTrustStoreFile(),
+						ConfigService.getTruststorePassword());
+				mSSRC = IfmapJ.createSsrc(certConfig);
 			}
 		}
 	}
