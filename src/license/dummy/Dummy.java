@@ -18,8 +18,8 @@
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of irondhcp, version 0.3.4, implemented by the Trust@HsH
- * research group at the Hochschule Hannover.
+ * This file is part of irondhcp, version 0.3.5,
+ * implemented by the Trust@HsH research group at the Hochschule Hannover.
  * %%
  * Copyright (C) 2010 - 2015 Trust@HsH
  * %%
