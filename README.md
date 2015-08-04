@@ -1,20 +1,20 @@
-irondhpc
+irondhcp
 ========
 
 This package contains an *experimental* IF-MAP client which can
-be used in combination with the ISC DHCP server [1] to publish
+be used in combination with the [ISC DHCP server][1] to publish
 ip-mac metadata on links between ip-address and mac-address
 identifiers. It does not represent a standalone DHCP server.
 
 The program was written using Java. For communication purposes
 ifmapj is used. Communication between the MAP client and MAP
-server is done using IF-MAP 2.0 [2].
+server is done using [IF-MAP 2.0][2].
 
 Development was started within the IRON project at Hochschule
 Hannover (Hannover University of Applied Sciences and Arts). The
-implementation is now maintained and extended within the ESUKOM
-research project. More information about the projects can be
-found at [3].
+implementation is now maintained and extended within the [ESUKOM
+research project][3]. More information about the projects can be
+found at.
 
 
 How it works
@@ -58,7 +58,7 @@ Server Certificate and Authentication
 
 To validate the authenticity of the MAP server, the MAP server's
 certificate has to be added in the keystore to be used by irondhcp.
-This can be done using the keytool program provided by Java [4]
+This can be done using the [keytool program provided by Java][4]
 
 Authentication can be either done using basic authentication or
 certificate-based authentication. Which of those authentication
@@ -94,13 +94,10 @@ If you have any questions, problems or comments, please contact
 
 LICENSE
 =======
-irondhcp is licensed under the Apache License, Version 2.0 [5].
+irondhcp is licensed under the [Apache License, Version 2.0][5].
 
-
-URLs
-====
-[1] http://www.isc.org/software/dhcp
-[2] http://www.trustedcomputinggroup.org/resources/tnc_ifmap_binding_for_soap_specification
-[3] http://trust.f4.hs-hannover.de
-[4] http://download.oracle.com/javase/1.5.0/docs/tooldocs/solaris/keytool.html
-[5] http://www.apache.org/licenses/LICENSE-2.0.html
+[1]: http://www.isc.org/software/dhcp
+[2]: http://www.trustedcomputinggroup.org/resources/tnc_ifmap_binding_for_soap_specification
+[3]: http://trust.f4.hs-hannover.de
+[4]: http://download.oracle.com/javase/1.5.0/docs/tooldocs/solaris/keytool.html
+[5]: http://www.apache.org/licenses/LICENSE-2.0.html
