@@ -7,17 +7,17 @@
  *    | | | |  | |_| \__ \ |_| | (_| |  _  |\__ \|  _  |
  *    |_| |_|   \__,_|___/\__|\ \__,_|_| |_||___/|_| |_|
  *                             \____/
- * 
+ *
  * =====================================================
- * 
+ *
  * Hochschule Hannover
  * (University of Applied Sciences and Arts, Hannover)
  * Faculty IV, Dept. of Computer Science
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
- * 
+ *
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de/
- * 
+ *
  * This file is part of irondhcp, version 0.3.5,
  * implemented by the Trust@HsH research group at the Hochschule Hannover.
  * %%
@@ -26,9 +26,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +36,6 @@
  * limitations under the License.
  * #L%
  */
-
 
 package de.hshannover.f4.trust.irondhcp.service;
 
@@ -65,11 +64,12 @@ import de.hshannover.f4.trust.ifmapj.messages.Requests;
 import de.hshannover.f4.trust.ifmapj.metadata.StandardIfmapMetadataFactory;
 import de.hshannover.f4.trust.irondhcp.parsing.Lease;
 import de.hshannover.f4.trust.irondhcp.util.DateUtil;
+import de.hshannover.f4.trust.irondhcp.util.SelfPublisher;
 
 /**
  * This Class contains all methods that are necessary for the communication with
  * the IF-MAP Server
- * 
+ *
  * @version 0.01 01 Dez 2009
  * @version 0.02 08 Dez 2009
  * @version 0.03 15 Dez 2009
@@ -139,24 +139,26 @@ public final class IfmapService {
 
 	/**
 	 * This Method opens a new Connection to the IF-MAP Server
-	 * 
+	 *
 	 * @throws InitializationException
 	 * @throws BindingException
 	 * @throws IfmapErrorResult
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	public void prepareSSRC() throws InitializationException {
 		if (mSSRC == null) {
 			if (ConfigService.getBasicAuthEnabled()) {
-				BasicAuthConfig basicConfig = new BasicAuthConfig(ConfigService.getServerUrl(), ConfigService.getBasicAuthUser(),
-						ConfigService.getBasicAuthPassword(), ConfigService.getTrustStoreFile(),
-						ConfigService.getTruststorePassword());
+				BasicAuthConfig basicConfig =
+						new BasicAuthConfig(ConfigService.getServerUrl(), ConfigService.getBasicAuthUser(),
+								ConfigService.getBasicAuthPassword(), ConfigService.getTrustStoreFile(),
+								ConfigService.getTruststorePassword());
 				mSSRC = IfmapJ.createSsrc(basicConfig);
 			} else {
-				CertAuthConfig certConfig = new CertAuthConfig(ConfigService.getServerUrl(), ConfigService.getTrustStoreFile(),
-						ConfigService.getTruststorePassword(), ConfigService.getTrustStoreFile(),
-						ConfigService.getTruststorePassword());
+				CertAuthConfig certConfig =
+						new CertAuthConfig(ConfigService.getServerUrl(), ConfigService.getTrustStoreFile(),
+								ConfigService.getTruststorePassword(), ConfigService.getTrustStoreFile(),
+								ConfigService.getTruststorePassword());
 				mSSRC = IfmapJ.createSsrc(certConfig);
 			}
 		}
@@ -164,12 +166,13 @@ public final class IfmapService {
 
 	/**
 	 * Closes an Ifmap-Session
-	 * 
+	 *
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
 	public void endSession() throws IfmapErrorResult, IfmapException {
-		if (!mSessionActive || mSSRC == null) {
+		if (!mSessionActive
+				|| mSSRC == null) {
 			return;
 		}
 		mSSRC.endSession();
@@ -178,12 +181,13 @@ public final class IfmapService {
 
 	/**
 	 * Starts a new Ifmap-Session
-	 * 
+	 *
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
 	public void newSession() throws IfmapErrorResult, IfmapException {
-		if (!mSessionActive && mSSRC != null) {
+		if (!mSessionActive
+				&& mSSRC != null) {
 			mSSRC.newSession();
 			mSessionActive = true;
 		}
@@ -191,18 +195,19 @@ public final class IfmapService {
 
 	/**
 	 * Purges all published metadata
-	 * 
+	 *
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
 	public void purgePublisher() throws IfmapErrorResult, IfmapException {
-		if (mSSRC != null && mSessionActive)
+		if (mSSRC != null
+				&& mSessionActive)
 			mSSRC.purgePublisher();
 	}
 
 	/**
 	 * Deletes metadata of expired leases
-	 * 
+	 *
 	 * @param delLeases
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
@@ -228,7 +233,7 @@ public final class IfmapService {
 
 	/**
 	 * Publishes metadata of new or updated leases
-	 * 
+	 *
 	 * @param newLeases
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
@@ -248,23 +253,21 @@ public final class IfmapService {
 
 			// we need the dates in xml-schema format <xsd:dateTime>:
 			// YYYY-MM-DDThh:mm:ss
-			if(lease.getStart() != null) {
+			if (lease.getStart() != null) {
 				start = DateUtil.getDateFormatXSD().format(
 						lease.getStart().getTime());
 				start = (start != null) ? DateUtil.fixUpTimeZone(start) : null;
-			}
-			else {
+			} else {
 				start = "never";
 			}
-			
-			if(lease.getEnd() != null) {
+
+			if (lease.getEnd() != null) {
 				end = DateUtil.getDateFormatXSD().format(lease.getEnd().getTime());
 				end = (end != null) ? DateUtil.fixUpTimeZone(end) : null;
-			}
-			else {
+			} else {
 				end = "never";
 			}
-			
+
 			ipMac = mMetadataFactory.createIpMac(start, end, dhcpserver);
 			fillWithIpMacIdentifier(pub, lease);
 			pub.addMetadata(ipMac);
@@ -275,14 +278,15 @@ public final class IfmapService {
 
 	/**
 	 * Helper to easily create the links to be published
-	 * 
+	 *
 	 * FIXME: Refactor the IdentifierFactory, so we shouldn't really need this
-	 * 
+	 *
 	 * @param el
 	 * @param lease
 	 */
 	private void fillWithIpMacIdentifier(IdentifierHolder el, Lease lease) {
-		if (el == null || lease == null) {
+		if (el == null
+				|| lease == null) {
 			throw new NullPointerException();
 		}
 		IpAddress ip = Identifiers.createIp4(lease.getIp());
@@ -292,9 +296,31 @@ public final class IfmapService {
 	}
 
 	public String getPublisherId() {
-		if (mSSRC == null || !mSessionActive)
+		if (mSSRC == null
+				|| !mSessionActive)
 			return "[NOT CONNECTED]";
 
 		return mSSRC.getPublisherId();
+	}
+
+	public void publishSelfInformation() throws IfmapErrorResult, IfmapException {
+		String ipValue = ConfigService.getDhcpdIp();
+		String deviceName = ConfigService.getSelfPublishDevice();
+		String serviceName = "DHCP";
+		String serviceType = "dhcp-server";
+		String servicePort = "67";
+		String implementationName = "ISC DHCP Server";
+		String implementationVersion = ConfigService.getIscDhcpServerVersion();
+		String implementationPlatform = null;
+		String implementationPatch = null;
+		String administrativeDomain = "";
+
+		PublishRequest selfPublishRequest = SelfPublisher.createSelfPublishRequest(ipValue, deviceName, serviceName,
+				serviceType, servicePort, implementationName, implementationVersion, implementationPlatform,
+				implementationPatch, administrativeDomain);
+
+		System.out.println("[irondhcp] Publishing self-information");
+
+		mSSRC.publish(selfPublishRequest);
 	}
 }

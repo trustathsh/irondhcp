@@ -20,17 +20,26 @@ irondhcp.server.basicauth.user=dhcp
 irondhcp.server.basicauth.password=dhcp
 
 # Path to the keystore to be used by irondhcp
-irondhcp.keystore.file=keystore/irondhcp.jks
+irondhcp.keystore.file=/keystore/irondhcp.jks
 
 # Password of the keystore
-irondhcp.keystore.password=mapdhcp
+irondhcp.keystore.password=irondhcp
 
 # Path to the truststore to be used by irondhcp
-irondhcp.truststore.file=keystore/irondhcp.jks
+irondhcp.truststore.file=/keystore/irondhcp.jks
 
 # Password of the truststore
-irondhcp.truststore.password=mapdhcp
+irondhcp.truststore.password=irondhcp
 
 # The address of the DHCP server to be used in
 # the ip-mac metadata.
 irondhcp.dhcpd.ip=10.0.1.230
+
+# The version of the DHCP server
+irondhcp.dhcpd.version=
+
+# Whether or not to publish self-information
+irondhcp.selfpublish.enable=true
+
+# The device name for self-publishing
+irondhcp.selfpublish.device=isc-dhcp-server-device
