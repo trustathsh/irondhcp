@@ -52,12 +52,14 @@ import de.hshannover.f4.trust.ifmapj.config.CertAuthConfig;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapErrorResult;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapException;
 import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
+import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
 import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
 import de.hshannover.f4.trust.ifmapj.identifier.IpAddress;
 import de.hshannover.f4.trust.ifmapj.identifier.MacAddress;
 import de.hshannover.f4.trust.ifmapj.messages.IdentifierHolder;
 import de.hshannover.f4.trust.ifmapj.messages.MetadataLifetime;
 import de.hshannover.f4.trust.ifmapj.messages.PublishDelete;
+import de.hshannover.f4.trust.ifmapj.messages.PublishElement;
 import de.hshannover.f4.trust.ifmapj.messages.PublishRequest;
 import de.hshannover.f4.trust.ifmapj.messages.PublishUpdate;
 import de.hshannover.f4.trust.ifmapj.messages.Requests;
@@ -205,30 +207,81 @@ public final class IfmapService {
 			mSSRC.purgePublisher();
 	}
 
+	private void fillWithDiscByIdentifier(IdentifierHolder el, Lease lease) {
+				if (el == null
+						|| lease == null) {
+					throw new NullPointerException();
+				}
+				String deviceName = ConfigService.getSelfPublishDevice();
+				Identifier selfDevice = Identifiers.createDev(deviceName);
+				MacAddress mac = Identifiers.createMac(lease.getMac());
+				el.setIdentifier1(selfDevice);
+				el.setIdentifier2(mac);
+			
+			}
+
 	/**
-	 * Deletes metadata of expired leases
-	 *
-	 * @param delLeases
-	 * @throws IfmapErrorResult
-	 * @throws IfmapException
-	 */
-	public void publishDelete(List<Lease> delLeases) throws IfmapErrorResult,
-			IfmapException {
-		PublishRequest req = Requests.createPublishReq();
-		for (Lease del : delLeases) {
-			PublishDelete pdel = Requests.createPublishDelete();
-			fillWithIpMacIdentifier(pdel, del);
-			// why prfx? because i want to check if namespace declaration
-			// functionality in IfmapJ is working ;)
-			pdel.setFilter("prfx:ip-mac[@ifmap-publisher-id=\""
-					+ mSSRC.getPublisherId() + "\" and dhcp-server=\""
-					+ ConfigService.getDhcpdIp() + "\"]");
-			// System.out.println(pd.getFilter());
-			pdel.addNamespaceDeclaration("prfx",
-					IfmapStrings.STD_METADATA_NS_URI);
-			req.addPublishElement(pdel);
-		}
-		mSSRC.publish(req);
+			 * Helper to easily create the links to be published
+			 *
+			 * FIXME: Refactor the IdentifierFactory, so we shouldn't really need this
+			 *
+			 * @param el
+			 * @param lease
+			 */
+			private void fillWithIpMacIdentifier(IdentifierHolder el, Lease lease) {
+				if (el == null
+						|| lease == null) {
+					throw new NullPointerException();
+				}
+				IpAddress ip = Identifiers.createIp4(lease.getIp());
+				MacAddress mac = Identifiers.createMac(lease.getMac());
+				el.setIdentifier1(ip);
+				el.setIdentifier2(mac);
+			}
+
+	/**
+			 * Deletes metadata of expired leases
+			 *
+			 * @param delLeases
+			 * @throws IfmapErrorResult
+			 * @throws IfmapException
+			 */
+			public void publishDelete(List<Lease> delLeases) throws IfmapErrorResult,
+					IfmapException {
+				PublishRequest req = Requests.createPublishReq();
+				for (Lease del : delLeases) {
+					PublishElement delIpMac = createIpMacDelete(del);
+					req.addPublishElement(delIpMac);
+			
+					PublishElement delDiscBy = createDiscByDelete(del);
+					req.addPublishElement(delDiscBy);
+				}
+				mSSRC.publish(req);
+			}
+
+	private PublishDelete createIpMacDelete(Lease del) {
+				PublishDelete result = Requests.createPublishDelete();
+				fillWithIpMacIdentifier(result, del);
+				// why prfx? because i want to check if namespace declaration
+				// functionality in IfmapJ is working ;)
+				result.setFilter("prfx:ip-mac[@ifmap-publisher-id=\""
+						+ mSSRC.getPublisherId() + "\" and dhcp-server=\""
+						+ ConfigService.getDhcpdIp() + "\"]");
+				result.addNamespaceDeclaration("prfx",
+						IfmapStrings.STD_METADATA_NS_URI);
+				return result;
+			}
+
+	private PublishElement createDiscByDelete(Lease del) {
+		PublishDelete result = Requests.createPublishDelete();
+		fillWithDiscByIdentifier(result, del);
+		// why prfx? because i want to check if namespace declaration
+		// functionality in IfmapJ is working ;)
+		result.setFilter("prfx:discovered-by[@ifmap-publisher-id=\""
+				+ mSSRC.getPublisherId() + "\"]");
+		result.addNamespaceDeclaration("prfx",
+				IfmapStrings.STD_METADATA_NS_URI);
+		return result;
 	}
 
 	/**
@@ -242,57 +295,56 @@ public final class IfmapService {
 			IfmapException {
 		// PublishRequest pr = mRequestFactory.createPublishReq();
 		PublishRequest req = Requests.createPublishReq();
-		String start = null;
-		String end = null;
-		String dhcpserver = ConfigService.getDhcpdIp();
-		Document ipMac;
+
 		for (Lease lease : newLeases) {
-			// pu = mRequestFactory.createPublishUpdate();
-			PublishUpdate pub = Requests.createPublishUpdate();
-			pub.setLifeTime(MetadataLifetime.session);
+			PublishElement updateIpMac = createIpMacUpdate(lease);
+			req.addPublishElement(updateIpMac);
 
-			// we need the dates in xml-schema format <xsd:dateTime>:
-			// YYYY-MM-DDThh:mm:ss
-			if (lease.getStart() != null) {
-				start = DateUtil.getDateFormatXSD().format(
-						lease.getStart().getTime());
-				start = (start != null) ? DateUtil.fixUpTimeZone(start) : null;
-			} else {
-				start = "never";
-			}
-
-			if (lease.getEnd() != null) {
-				end = DateUtil.getDateFormatXSD().format(lease.getEnd().getTime());
-				end = (end != null) ? DateUtil.fixUpTimeZone(end) : null;
-			} else {
-				end = "never";
-			}
-
-			ipMac = mMetadataFactory.createIpMac(start, end, dhcpserver);
-			fillWithIpMacIdentifier(pub, lease);
-			pub.addMetadata(ipMac);
-			req.addPublishElement(pub);
+			PublishElement updateDiscBy = createDiscByUpdate(lease);
+			req.addPublishElement(updateDiscBy);
 		}
 		mSSRC.publish(req);
 	}
 
-	/**
-	 * Helper to easily create the links to be published
-	 *
-	 * FIXME: Refactor the IdentifierFactory, so we shouldn't really need this
-	 *
-	 * @param el
-	 * @param lease
-	 */
-	private void fillWithIpMacIdentifier(IdentifierHolder el, Lease lease) {
-		if (el == null
-				|| lease == null) {
-			throw new NullPointerException();
-		}
-		IpAddress ip = Identifiers.createIp4(lease.getIp());
-		MacAddress mac = Identifiers.createMac(lease.getMac());
-		el.setIdentifier1(ip);
-		el.setIdentifier2(mac);
+	private PublishElement createIpMacUpdate(Lease lease) {
+				String start = null;
+				String end = null;
+				String dhcpserver = ConfigService.getDhcpdIp();
+				Document ipMac;
+				// pu = mRequestFactory.createPublishUpdate();
+				PublishUpdate pub = Requests.createPublishUpdate();
+				pub.setLifeTime(MetadataLifetime.session);
+			
+				// we need the dates in xml-schema format <xsd:dateTime>:
+				// YYYY-MM-DDThh:mm:ss
+				if (lease.getStart() != null) {
+					start = DateUtil.getDateFormatXSD().format(
+							lease.getStart().getTime());
+					start = (start != null) ? DateUtil.fixUpTimeZone(start) : null;
+				} else {
+					start = "never";
+				}
+			
+				if (lease.getEnd() != null) {
+					end = DateUtil.getDateFormatXSD().format(lease.getEnd().getTime());
+					end = (end != null) ? DateUtil.fixUpTimeZone(end) : null;
+				} else {
+					end = "never";
+				}
+			
+				ipMac = mMetadataFactory.createIpMac(start, end, dhcpserver);
+				fillWithIpMacIdentifier(pub, lease);
+				pub.addMetadata(ipMac);
+				return pub;
+			}
+
+	private PublishElement createDiscByUpdate(Lease lease) {
+		PublishUpdate pub = Requests.createPublishUpdate();
+		pub.setLifeTime(MetadataLifetime.session);
+		Document discBy = mMetadataFactory.createDiscoveredBy();
+		fillWithDiscByIdentifier(pub, lease);
+		pub.addMetadata(discBy);
+		return pub;
 	}
 
 	public String getPublisherId() {
