@@ -62,6 +62,8 @@ public final class ConfigService {
 			+ "dhcpd.";
 	private static final String SELF_PUBLISH = PREFIX
 			+ "selfpublish.";
+	private static final String PUBLISH = PREFIX
+			+ "publish";
 
 	/* integer in seconds */
 	private static final String INTERVAL_KEY = PARSER
@@ -102,6 +104,12 @@ public final class ConfigService {
 
 	private static final String DHCPD_VERSION = DHCPD
 			+ "version";
+
+	private static final String REQUEST_FOR_INVESTIGATION = PUBLISH
+			+ "requestforinvestigation";
+
+	private static final String DISCOVERED_BY = PUBLISH
+			+ "discoveredby";
 
 	private static PropertiesReader reader = new PropertiesReader(IRONDHCP_CONFIGFILE);
 
@@ -173,6 +181,14 @@ public final class ConfigService {
 
 	public static String getIscDhcpServerVersion() {
 		return getConfigEntry(DHCPD_VERSION);
+	}
+
+	public static boolean getRequestForInvestigation() {
+		return getConfigEntry(REQUEST_FOR_INVESTIGATION).equals("true");
+	}
+
+	public static boolean getDiscoveredBy() {
+		return getConfigEntry(DISCOVERED_BY).equals("true");
 	}
 
 	/**
