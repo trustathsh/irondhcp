@@ -43,3 +43,9 @@ irondhcp.selfpublish.enable=true
 
 # The device name for self-publishing
 irondhcp.selfpublish.device=isc-dhcp-server-device
+
+# Whether or not to publish request-for-investigation for each new lease
+irondhcp.publish.requestforinvestigation=true
+
+# Whether or not to publish discovered-by (device<->mac-address) for each new lease
+irondhcp.publish.discoveredby=true
