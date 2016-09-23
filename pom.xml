@@ -10,7 +10,7 @@
 	<!-- general project information -->
 	<groupId>de.hshannover.f4.trust</groupId>
 	<artifactId>irondhcp</artifactId>
-	<version>0.3.5</version>
+	<version>0.3.6</version>
 	<packaging>jar</packaging>
 	<name>irondhcp</name>
 	<url>http://trust.f4.hs-hannover.de</url>
